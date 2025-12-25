@@ -3,7 +3,7 @@
     "build": {
         "builder": "DOCKERFILE",
         "dockerfilePath": "backend/Dockerfile",
-        "context": "backend"
+        "context": "."
     },
     "deploy": {
         "startCommand": "daphne -b 0.0.0.0 -p 8000 pulse_backend.asgi:application",
