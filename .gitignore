@@ -1,0 +1,39 @@
+# Django
+*.pyc
+*~
+__pycache__/
+db.sqlite3
+/static/
+/media/
+.env
+
+# Flutter
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+/build/
+ios/Flutter/Generated.xcconfig
+ios/Flutter/flutter_export_environment.sh
+ios/Flutter/Flutter.podspec
+android/app/src/main/res/values-v21/styles.xml
+android/app/src/main/res/values/styles.xml
+android/key.properties
+android/app/key.properties
+android/app/src/main/AndroidManifest.xml.original
+
+# Docker
+.docker_data/
+docker-compose.override.yml
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
