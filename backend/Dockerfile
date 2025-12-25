@@ -26,5 +26,5 @@ COPY . /app/
 # Expose port
 EXPOSE 8000
 
-# Start command (will be overridden in docker-compose for celery/daphne)
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# Start command for production
+CMD ["daphne", "-b", "0.0.0.0", "-p", "8000", "pulse_backend.asgi:application"]
