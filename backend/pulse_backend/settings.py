@@ -170,6 +170,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
     "http://localhost:8000",
     "http://127.0.0.1:8000",
+    "https://pulse-production-f3ba.up.railway.app",
 ]
 # For Flutter web dev
 CORS_ALLOW_ALL_ORIGINS = DEBUG 

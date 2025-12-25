@@ -2,9 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
 class ApiService {
-  static final String _baseUrl = kIsWeb || !defaultTargetPlatform.toString().contains('android') 
-      ? 'http://localhost:8000/api/' 
-      : 'http://10.0.2.2:8000/api/';
+  static const String _baseUrl = 'https://pulse-production-f3ba.up.railway.app/api/';
 
   static final Dio dio = Dio(
     BaseOptions(
