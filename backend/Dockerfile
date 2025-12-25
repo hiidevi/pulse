@@ -27,4 +27,4 @@ COPY backend/ /app/
 EXPOSE 8000
 
 # Start command for production
-CMD ["daphne", "-b", "0.0.0.0", "-p", "8000", "pulse_backend.asgi:application"]
+CMD daphne -b 0.0.0.0 -p $PORT pulse_backend.asgi:application
