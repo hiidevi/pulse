@@ -16,8 +16,10 @@ services:
       - "6379:6379"
 
   web:
-    build: ./backend
-    command: python manage.py runserver 0.0.0.0:8000
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    command: daphne -b 0.0.0.0 -p 8000 pulse_backend.asgi:application
     volumes:
       - ./backend:/app
     ports:
@@ -30,7 +32,9 @@ services:
       - redis
 
   celery_worker:
-    build: ./backend
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
     command: celery -A pulse_backend worker --loglevel=info
     volumes:
       - ./backend:/app
