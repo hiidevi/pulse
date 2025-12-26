@@ -13,6 +13,6 @@ python manage.py collectstatic --noinput --clear
 echo "Applying database migrations..."
 python manage.py migrate --noinput
 
-# Start Daphne
-echo "Launching Daphne server on port $PORT..."
-exec daphne -b 0.0.0.0 -p $PORT pulse_backend.asgi:application
+# Start Uvicorn
+echo "Launching Uvicorn server on port $PORT..."
+exec uvicorn pulse_backend.asgi:application --host 0.0.0.0 --port $PORT --proxy-headers
