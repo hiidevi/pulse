@@ -4,6 +4,10 @@ FROM python:3.9-slim
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
+ENV PORT 8080
+
+# Expose the port Railway will route traffic to
+EXPOSE 8080
 
 # Set work directory
 WORKDIR /app
