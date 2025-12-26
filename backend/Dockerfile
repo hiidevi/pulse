@@ -23,6 +23,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy project
 COPY backend/ /app/
 
+# Run collectstatic during build (Baked into image)
+# We set dummy environment variables because settings.py runs during collectstatic
+RUN SECRET_KEY=build_secret DATABASE_URL=sqlite:///db.sqlite3 python manage.py collectstatic --noinput --clear
+
 # Make startup script executable
 RUN chmod +x /app/start.sh
 
