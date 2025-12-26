@@ -30,9 +30,13 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-default-dev-key')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
 # Required for Railway health checks and public URLs
 ALLOWED_HOSTS.extend(['healthcheck.railway.app', '.railway.app'])
+
+# Security settings for production behind proxy
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = os.environ.get('SECURE_SSL_REDIRECT', 'False') == 'True'
 
 
 # Application definition
@@ -59,6 +63,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -133,6 +138,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -172,8 +179,11 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8000",
     "https://pulse-production-f3ba.up.railway.app",
 ]
-# For Flutter web dev
-CORS_ALLOW_ALL_ORIGINS = DEBUG 
+CORS_ALLOW_ALL_ORIGINS = True # Set to True for initial production connectivity verification
+CSRF_TRUSTED_ORIGINS = [
+    "https://pulse-production-f3ba.up.railway.app",
+    "https://*.railway.app",
+]
 
 # Celery Configuration
 CELERY_BROKER_URL = os.environ.get('REDIS_URL', 'redis://localhost:6379/0')

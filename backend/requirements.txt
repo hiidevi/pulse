@@ -11,3 +11,4 @@ Pillow
 daphne
 dj-database-url
 python-dotenv
+whitenoise
