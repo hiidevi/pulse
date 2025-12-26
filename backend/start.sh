@@ -5,13 +5,13 @@ set -e
 
 echo "Starting Pulse Backend Startup Sequence..."
 
-# Collect static files
-echo "Collecting static files..."
-python manage.py collectstatic --noinput --clear
+# Collect static files (Skipping for fast boot)
+# echo "Collecting static files..."
+# python manage.py collectstatic --noinput --clear
 
-# Run migrations
-echo "Applying database migrations..."
-python manage.py migrate --noinput
+# Run migrations (Skipping for fast boot)
+# echo "Applying database migrations..."
+# python manage.py migrate --noinput
 
 # Start Uvicorn
 echo "Launching Uvicorn server on port $PORT..."
