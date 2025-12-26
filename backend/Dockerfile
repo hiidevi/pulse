@@ -2,11 +2,9 @@
 FROM python:3.9-slim
 
 # Set environment variables
+# Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
-
-# Expose the port (Hint for Railway)
-EXPOSE 8080
 
 # Set work directory
 WORKDIR /app
