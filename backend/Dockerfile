@@ -23,14 +23,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy project
 COPY backend/ /app/
 
+# Copy and verify entrypoint
+COPY backend/entrypoint.sh /app/
+RUN chmod +x /app/entrypoint.sh
+
 # Run collectstatic during build (Baked into image)
-# We set dummy environment variables because settings.py runs during collectstatic
 RUN SECRET_KEY=build_secret DATABASE_URL=sqlite:///db.sqlite3 python manage.py collectstatic --noinput --clear
 
-# Start command is managed by railway.json
-# Use shell form to expand environment variables
-CMD python manage.py migrate && \
-    uvicorn pulse_backend.asgi:application \
-    --host 0.0.0.0 \
-    --port ${PORT:-8080} \
-    --proxy-headers
+# Use entrypoint script
+CMD ["/app/entrypoint.sh"]
