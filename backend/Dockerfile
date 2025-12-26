@@ -23,12 +23,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy project
 COPY backend/ /app/
 
-# Environment for static files
-ENV DJANGO_SETTINGS_MODULE=pulse_backend.settings
-RUN python manage.py collectstatic --noinput
+# Make startup script executable
+RUN chmod +x /app/start.sh
 
-# Expose port
-EXPOSE 8000
-
-# Start command for production (Gunicorn + Uvicorn workers)
-CMD gunicorn pulse_backend.asgi:application --get-asgi-application --bind 0.0.0.0:$PORT --worker-class uvicorn.workers.UvicornWorker --workers 4 --threads 4 --timeout 120
+# Start command for production
+CMD ["/app/start.sh"]
