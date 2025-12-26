@@ -30,8 +30,4 @@ COPY backend/ /app/
 # We set dummy environment variables because settings.py runs during collectstatic
 RUN SECRET_KEY=build_secret DATABASE_URL=sqlite:///db.sqlite3 python manage.py collectstatic --noinput --clear
 
-# Make startup script executable
-RUN chmod +x /app/start.sh
-
-# Start command for production
-CMD ["/app/start.sh"]
+# Start command is managed by railway.json
