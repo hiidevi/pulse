@@ -16,10 +16,25 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.http import HttpResponse
+from django.http import JsonResponse, HttpResponse
+from django.views.decorators.cache import never_cache
+import django
+
+@never_cache
+def health_check(request):
+    """
+    Health check endpoint for Railway.
+    Returns service status and Django version.
+    """
+    return JsonResponse({
+        'status': 'healthy',
+        'service': 'pulse-backend',
+        'django_version': django.get_version(),
+    })
 
 urlpatterns = [
-    path('', lambda r: HttpResponse("OK"), name='health-check'),
+    path('', lambda r: HttpResponse("OK"), name='root'),
+    path('health/', health_check, name='health'),
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
 ]

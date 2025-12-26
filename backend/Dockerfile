@@ -23,12 +23,17 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy project
 COPY backend/ /app/
 
-# Copy and verify entrypoint
-COPY backend/entrypoint.sh /app/
-RUN chmod +x /app/entrypoint.sh
-
 # Run collectstatic during build (Baked into image)
 RUN SECRET_KEY=build_secret DATABASE_URL=sqlite:///db.sqlite3 python manage.py collectstatic --noinput --clear
 
-# Use entrypoint script
-CMD ["/app/entrypoint.sh"]
+# Railway Start Command Strategy
+# Use shell form to allow variable expansion
+CMD python manage.py migrate --noinput && \
+    echo "🔍 Starting Uvicorn on port ${PORT:-8080}" && \
+    uvicorn pulse_backend.asgi:application \
+    --host 0.0.0.0 \
+    --port ${PORT:-8080} \
+    --log-level info \
+    --timeout-keep-alive 75 \
+    --timeout-graceful-shutdown 30 \
+    --lifespan on

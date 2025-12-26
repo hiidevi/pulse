@@ -14,3 +14,4 @@ python-dotenv
 whitenoise
 gunicorn
 uvicorn[standard]
+gunicorn
