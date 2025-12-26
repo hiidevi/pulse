@@ -12,3 +12,5 @@ daphne
 dj-database-url
 python-dotenv
 whitenoise
+gunicorn
+uvicorn[standard]
