@@ -5,12 +5,8 @@ FROM python:3.9-slim
 # Expose the port (Hint for Railway)
 EXPOSE 8080
 
-# Use shell form to expand environment variables
-CMD python manage.py migrate && \
-    uvicorn pulse_backend.asgi:application \
-    --host 0.0.0.0 \
-    --port ${PORT:-8080} \
-    --proxy-headers
+# Set work directory
+WORKDIR /app
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
@@ -32,3 +28,9 @@ COPY backend/ /app/
 RUN SECRET_KEY=build_secret DATABASE_URL=sqlite:///db.sqlite3 python manage.py collectstatic --noinput --clear
 
 # Start command is managed by railway.json
+# Use shell form to expand environment variables
+CMD python manage.py migrate && \
+    uvicorn pulse_backend.asgi:application \
+    --host 0.0.0.0 \
+    --port ${PORT:-8080} \
+    --proxy-headers
