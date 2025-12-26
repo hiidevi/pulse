@@ -2,16 +2,15 @@
 FROM python:3.9-slim
 
 # Set environment variables
-# Set environment variables
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
-ENV PORT 8080
-
-# Expose properly for Railway
+# Expose the port (Hint for Railway)
 EXPOSE 8080
 
-# Set work directory
-WORKDIR /app
+# Use shell form to expand environment variables
+CMD python manage.py migrate && \
+    uvicorn pulse_backend.asgi:application \
+    --host 0.0.0.0 \
+    --port ${PORT:-8080} \
+    --proxy-headers
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
