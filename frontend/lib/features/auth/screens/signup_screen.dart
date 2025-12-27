@@ -1,14 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import '../../../theme/app_theme.dart';
-import '../../../services/auth_service.dart';
-
-class SignupScreen extends StatefulWidget {
-  const SignupScreen({super.key});
-
-  @override
-  State<SignupScreen> createState() => _SignupScreenState();
-}
+import '../../../services/notification_service.dart';
 
 class _SignupScreenState extends State<SignupScreen> {
   final _emailController = TextEditingController();
@@ -39,6 +29,13 @@ class _SignupScreenState extends State<SignupScreen> {
         _emailController.text.trim(),
         _passwordController.text,
       );
+      
+      // Register device token for notifications
+      try {
+        await NotificationService.registerDeviceToken();
+      } catch (e) {
+        debugPrint('Notification registration failed: $e');
+      }
 
       if (mounted) {
         context.go('/home');

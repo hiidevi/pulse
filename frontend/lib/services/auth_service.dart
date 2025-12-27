@@ -12,7 +12,7 @@ class AuthService {
       });
       if (response.statusCode == 200) {
         final data = response.data;
-        ApiService.setToken(data['access']);
+        await ApiService.persistToken(data['access']);
         return data;
       }
       throw Exception('Failed to login');

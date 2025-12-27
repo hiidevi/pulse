@@ -15,9 +15,10 @@ import '../features/profile/screens/profile_gallery_screen.dart';
 import '../models/moment.dart';
 
 class AppRouter {
-  static final router = GoRouter(
-    initialLocation: '/onboarding',
-    routes: [
+  static GoRouter createRouter(bool isLoggedIn) {
+    return GoRouter(
+      initialLocation: isLoggedIn ? '/home' : '/onboarding',
+      routes: [
       GoRoute(
         path: '/onboarding',
         builder: (context, state) => const OnboardingScreen(),
