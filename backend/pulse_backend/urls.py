@@ -23,13 +23,27 @@ import django
 @never_cache
 def health_check(request):
     """
-    Health check endpoint for Railway.
-    Returns service status and Django version.
     """
+    Health check endpoint for Render.
+    Returns service status, Django version, and database connectivity.
+    """
+    from django.db import connection
+    from django.db.utils import OperationalError
+    
+    db_status = "unknown"
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT 1")
+            db_status = "connected"
+    except OperationalError:
+        db_status = "disconnected"
+        return JsonResponse({'status': 'unhealthy', 'database': db_status}, status=503)
+
     return JsonResponse({
         'status': 'healthy',
         'service': 'pulse-backend',
         'django_version': django.get_version(),
+        'database': db_status,
     })
 
 urlpatterns = [
