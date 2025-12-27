@@ -45,21 +45,40 @@ class NotificationService {
   }
 
   static Future<void> _showLocalNotification(RemoteMessage message) async {
+    const BigTextStyleInformation bigTextStyleInformation =
+        BigTextStyleInformation(
+      '',
+      htmlFormatBigText: true,
+      contentTitle: '',
+      htmlFormatContentTitle: true,
+      summaryText: '',
+      htmlFormatSummaryText: true,
+    );
+
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
-      'pulse_channel',
-      'Pulse Notifications',
+      'pulse_channel_high',
+      'Pulse Heartbeats',
+      channelDescription: 'Real-time notifications for your inner circle.',
       importance: Importance.max,
       priority: Priority.high,
       showWhen: true,
+      color: Color(0xFF6750A4), // Pulse Deep Purple
+      ledColor: Color(0xFFFFB6C1), // Pulse Pink
+      ledOnMs: 1000,
+      ledOffMs: 500,
+      enableLights: true,
+      enableVibration: true,
+      styleInformation: bigTextStyleInformation,
+      ticker: 'New Pulse received',
     );
     const NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
 
     await _localNotifications.show(
       message.hashCode,
-      message.notification?.title,
-      message.notification?.body,
+      message.notification?.title ?? 'Pulse 💓',
+      message.notification?.body ?? 'New heartbeat waiting for you.',
       platformChannelSpecifics,
       payload: message.data.toString(),
     );
