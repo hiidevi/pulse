@@ -148,9 +148,11 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                   ),
                                   const Divider(height: 32),
                                   TextButton(
-                                    onPressed: () {
-                                      ApiService.clearToken();
-                                      context.go('/onboarding');
+                                    onPressed: () async {
+                                      await ApiService.clearToken();
+                                      if (context.mounted) {
+                                        context.go('/onboarding');
+                                      }
                                     },
                                     child: const Text('Log Out', style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold)),
                                   ),
