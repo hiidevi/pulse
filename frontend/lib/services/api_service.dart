@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
 class ApiService {
-  static const String _baseUrl = 'https://pulse-production-f3ba.up.railway.app/api/';
+  static const String _baseUrl = 'https://pulse-25aw.onrender.com/api/';
 
   static final Dio dio = Dio(
     BaseOptions(
