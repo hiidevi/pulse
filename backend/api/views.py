@@ -118,6 +118,14 @@ class ConnectionRequestView(APIView):
             fail_silently=True,
         )
 
+        # Send Push Notification
+        send_push_notification(
+            receiver, 
+            "New Circle Request 💓", 
+            f"{request.user.username} wants to join your circle! Spark a heartbeat now.",
+            {"type": "connection_request", "sender_id": str(request.user.id)}
+        )
+
         return Response(ConnectionSerializer(connection).data, status=status.HTTP_201_CREATED)
 
 class ConnectionRespondView(APIView):
@@ -180,6 +188,14 @@ class MomentSendView(APIView):
             "pulseteam@pulse.app",
             [receiver.email],
             fail_silently=True,
+        )
+        
+        # Send Push Notification
+        send_push_notification(
+            receiver,
+            f"Pulse from {request.user.username} 💓",
+            f"You've received a new moment: '{text}'.",
+            {"type": "moment", "moment_id": str(moment.id), "sender_id": str(request.user.id)}
         )
         
         return Response(MomentSerializer(moment).data, status=status.HTTP_201_CREATED)
