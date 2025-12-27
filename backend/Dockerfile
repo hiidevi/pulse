@@ -26,14 +26,11 @@ COPY backend/ /app/
 # Run collectstatic during build (Baked into image)
 RUN SECRET_KEY=build_secret DATABASE_URL=sqlite:///db.sqlite3 python manage.py collectstatic --noinput --clear
 
-# Railway Start Command Strategy
-# Use shell form to allow variable expansion
-CMD python manage.py migrate --noinput && \
-    echo "🔍 Starting Uvicorn on port ${PORT:-8080}" && \
+# Railway Start Command - Fast Startup
+# Migrations removed - run via Railway Release Command or manually
+CMD echo "🔍 Starting Uvicorn on port ${PORT:-8080}" && \
     uvicorn pulse_backend.asgi:application \
     --host 0.0.0.0 \
     --port ${PORT:-8080} \
     --log-level info \
-    --timeout-keep-alive 75 \
-    --timeout-graceful-shutdown 30 \
-    --lifespan on
+    --timeout-keep-alive 75
