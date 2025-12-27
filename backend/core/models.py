@@ -5,6 +5,7 @@ import uuid
 class User(AbstractUser):
     invite_id = models.CharField(max_length=10, unique=True, blank=True)
     avatar_emoji = models.CharField(max_length=10, default="😊")
+    fcm_token = models.TextField(blank=True, null=True)
     
     def save(self, *args, **kwargs):
         if not self.invite_id:

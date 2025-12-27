@@ -3,13 +3,15 @@ from .views import (
     SignupView, LoginView, UserProfileView, 
     UserSearchView, ConnectionRequestView, ConnectionRespondView, ConnectionListView,
     MomentSendView, MomentListView, MomentReplyView, ActivityListView,
-    ConversationListView, ProfilePhotoUploadView, PublicUserProfileView
+    ConversationListView, ProfilePhotoUploadView, PublicUserProfileView,
+    FCMTokenRegisterView
 )
 
 urlpatterns = [
     path('auth/signup/', SignupView.as_view(), name='signup'),
     path('auth/login/', LoginView.as_view(), name='login'),
     path('auth/profile/', UserProfileView.as_view(), name='profile'),
+    path('auth/register-fcm/', FCMTokenRegisterView.as_view(), name='register-fcm'),
     path('users/search/', UserSearchView.as_view(), name='user-search'),
     path('connections/request/', ConnectionRequestView.as_view(), name='connection-request'),
     path('connections/respond/', ConnectionRespondView.as_view(), name='connection-respond'),

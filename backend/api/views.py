@@ -11,6 +11,7 @@ from .serializers import (
     MomentSerializer, ReplySerializer, UserProfilePhotoSerializer
 )
 from core.models import User, Connection, Moment, Reply, MomentRecipient, UserProfilePhoto
+from .notifications import send_push_notification
 
 class SignupView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -218,6 +219,16 @@ class MomentReplyView(APIView):
             emoji=emoji
         )
         
+        
+        # Send Push Notification to Moment Sender
+        if parent_moment.sender != request.user:
+            send_push_notification(
+                parent_moment.sender,
+                f"New Reply from {request.user.username} ✨",
+                f"'{text}'",
+                {"type": "reply", "moment_id": str(parent_moment.id), "sender_id": str(request.user.id)}
+            )
+
         return Response(ReplySerializer(reply).data, status=status.HTTP_201_CREATED)
 
 class ActivityListView(APIView):
@@ -283,6 +294,15 @@ class ProfilePhotoUploadView(APIView):
         return Response(UserProfilePhotoSerializer(photo).data, status=status.HTTP_200_OK if not created else status.HTTP_201_CREATED)
     
     def delete(self, request, photo_id):
-        photo = get_object_or_404(UserProfilePhoto, id=photo_id, user=request.user)
         photo.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class FCMTokenRegisterView(APIView):
+    def post(self, request):
+        token = request.data.get('fcm_token')
+        if not token:
+            return Response({'error': 'No token provided'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        request.user.fcm_token = token
+        request.user.save()
+        return Response({'status': 'Token registered successfully'})
