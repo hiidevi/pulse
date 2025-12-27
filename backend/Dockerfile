@@ -26,10 +26,9 @@ COPY backend/ /app/
 # Run collectstatic during build (Baked into image)
 RUN SECRET_KEY=build_secret DATABASE_URL=sqlite:///db.sqlite3 python manage.py collectstatic --noinput --clear
 
-# Railway Start Command - Fast Startup
-# Migrations removed - run via Railway Release Command or manually
-CMD echo "🔍 Starting Uvicorn on port ${PORT:-8080}" && \
-    uvicorn pulse_backend.asgi:application \
+# Railway Start Command - Use exec for proper signal handling
+# exec replaces shell with uvicorn so Railway monitors the right process
+CMD exec uvicorn pulse_backend.asgi:application \
     --host 0.0.0.0 \
     --port ${PORT:-8080} \
     --log-level info \
