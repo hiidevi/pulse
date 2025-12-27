@@ -23,7 +23,6 @@ import django
 @never_cache
 def health_check(request):
     """
-    """
     Health check endpoint for Render.
     Returns service status, Django version, and database connectivity.
     """
