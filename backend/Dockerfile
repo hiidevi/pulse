@@ -27,9 +27,9 @@ COPY backend/ /app/
 RUN SECRET_KEY=build_secret DATABASE_URL=sqlite:///db.sqlite3 python manage.py collectstatic --noinput --clear
 
 # Railway Start Command - Use exec for proper signal handling
-# exec replaces shell with uvicorn so Railway monitors the right process
 CMD exec uvicorn pulse_backend.asgi:application \
     --host 0.0.0.0 \
     --port ${PORT:-8080} \
     --log-level info \
-    --timeout-keep-alive 75
+    --timeout-keep-alive 75 \
+    --lifespan on
